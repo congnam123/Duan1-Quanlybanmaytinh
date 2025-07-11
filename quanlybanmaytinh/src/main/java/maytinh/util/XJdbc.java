@@ -111,5 +111,49 @@ public class XJdbc {
         }
         return stmt;
     }
-    
-} 
+
+    /**
+     * Cập nhật dữ liệu với đóng kết nối sau khi thực thi
+     */
+    public static void update(String sql, Object... args) {
+        try {
+            PreparedStatement stmt = getStmt(sql, args);
+            try {
+                stmt.executeUpdate();
+            } finally {
+                stmt.getConnection().close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Lỗi khi thực hiện update dữ liệu", e);
+        }
+    }
+
+    /**
+     * Tạo PreparedStatement cho update
+     */
+    public static PreparedStatement getStmt(String sql, Object... args) throws SQLException {
+        Connection conn = getConnection();
+        PreparedStatement stmt = conn.prepareStatement(sql);
+        for (int i = 0; i < args.length; i++) {
+            stmt.setObject(i + 1, args[i]);
+        }
+        return stmt;
+    }
+
+    /**
+     * Trả về kết nối mới mỗi lần gọi (cho getStmt)
+     */
+    public static Connection getConnection() throws SQLException {
+        String dburl = "jdbc:sqlserver://localhost:1433;database=QLBanmaytinh;encrypt=true;trustServerCertificate=true;";
+        String username = "sa";
+        String password = "12345";
+
+        try {
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            return DriverManager.getConnection(dburl, username, password);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException("Không tìm thấy driver SQL Server", e);
+        }
+    }
+}

@@ -1,21 +1,28 @@
--- Tạo cơ sở dữ liệu
+USE master;
+GO
+
+DROP DATABASE IF EXISTS QLBanmaytinh;
+GO
+
+
 CREATE DATABASE QLBanmaytinh;
 GO
 
 USE QLBanmaytinh;
 GO
 
--- Bảng người dùng
+-- BẢNG NGƯỜI DÙNG (USERNAME LÀ KHÓA CHÍNH)
 CREATE TABLE Users (
-    UserID INT PRIMARY KEY IDENTITY,
-    HoTen NVARCHAR(100),
-    Email VARCHAR(100) UNIQUE,
-    MatKhau VARCHAR(100),
-    VaiTro NVARCHAR(20) CHECK (VaiTro IN ('KhachHang', 'Admin')),
-    NgayTao DATETIME DEFAULT GETDATE()
+    Username NVARCHAR(20) NOT NULL,
+    Password NVARCHAR(50) NOT NULL,
+    Enabled BIT NOT NULL,
+    Fullname NVARCHAR(50) NOT NULL,
+    Photo NVARCHAR(50) NOT NULL,
+    Manager BIT NOT NULL,
+    PRIMARY KEY (Username)
 );
 
--- Bảng sản phẩm
+-- BẢNG SẢN PHẨM
 CREATE TABLE SanPham (
     MaSP INT PRIMARY KEY IDENTITY,
     TenSP NVARCHAR(100),
@@ -25,17 +32,17 @@ CREATE TABLE SanPham (
     NgayThem DATETIME DEFAULT GETDATE()
 );
 
--- Đơn hàng
+-- BẢNG ĐƠN HÀNG (THAM CHIẾU Username)
 CREATE TABLE DonHang (
     MaDH INT PRIMARY KEY IDENTITY,
-    UserID INT,
+    Username NVARCHAR(20),
     NgayLap DATETIME DEFAULT GETDATE(),
     TongTien DECIMAL(18,2),
     TrangThai NVARCHAR(50),
-    FOREIGN KEY (UserID) REFERENCES Users(UserID)
+    FOREIGN KEY (Username) REFERENCES Users(Username)
 );
 
--- Chi tiết đơn hàng
+-- BẢNG CHI TIẾT ĐƠN HÀNG
 CREATE TABLE ChiTietDonHang (
     MaCTDH INT PRIMARY KEY IDENTITY,
     MaDH INT,
@@ -46,26 +53,26 @@ CREATE TABLE ChiTietDonHang (
     FOREIGN KEY (MaSP) REFERENCES SanPham(MaSP)
 );
 
--- Đánh giá sản phẩm
+-- BẢNG ĐÁNH GIÁ
 CREATE TABLE DanhGia (
     MaDG INT PRIMARY KEY IDENTITY,
-    UserID INT,
+    Username NVARCHAR(20),
     MaSP INT,
     NoiDung NVARCHAR(255),
     Diem INT CHECK (Diem BETWEEN 1 AND 5),
     NgayDanhGia DATETIME DEFAULT GETDATE(),
-    FOREIGN KEY (UserID) REFERENCES Users(UserID),
+    FOREIGN KEY (Username) REFERENCES Users(Username),
     FOREIGN KEY (MaSP) REFERENCES SanPham(MaSP)
 );
 
--- Thêm người dùng (admin và khách hàng)
-INSERT INTO Users (HoTen, Email, MatKhau, VaiTro)
+-- THÊM NGƯỜI DÙNG
+INSERT INTO Users (Username, Password, Enabled, Fullname, Photo, Manager)
 VALUES 
-(N'Nguyễn Văn A', 'admin@example.com', 'admin123', 'Admin'),
-(N'Lê Thị B', 'b.le@example.com', 'khach123', 'KhachHang'),
-(N'Trần Văn C', 'c.tran@example.com', 'khach456', 'KhachHang');
+('admin', 'admin123', 1, N'Nguyễn Văn A', 'admin.jpg', 1),
+('khach1', '123456', 1, N'Lê Thị B', 'b.jpg', 0),
+('khach2', '456789', 1, N'Trần Văn C', 'c.jpg', 0);
 
--- Thêm sản phẩm máy tính
+-- THÊM SẢN PHẨM
 INSERT INTO SanPham (TenSP, MoTa, Gia, SoLuongTon)
 VALUES 
 (N'Máy tính Dell OptiPlex 7090', N'Intel Core i5, 8GB RAM, 256GB SSD', 13500000, 12),
@@ -74,30 +81,23 @@ VALUES
 (N'Máy tính Lenovo ThinkCentre M720s', N'Intel Core i5, 8GB RAM, 1TB HDD', 14500000, 10),
 (N'Máy tính Acer Veriton X', N'Intel Core i3, 4GB RAM, 500GB HDD', 9500000, 20);
 
--- Thêm đơn hàng mẫu
-INSERT INTO DonHang (UserID, TongTien, TrangThai)
+-- THÊM ĐƠN HÀNG
+INSERT INTO DonHang (Username, TongTien, TrangThai)
 VALUES 
-(2, 14000000, N'Đã thanh toán'),
-(3, 18500000, N'Đang xử lý');
+('khach1', 14000000, N'Đã thanh toán'),
+('khach2', 18500000, N'Đang xử lý');
 
--- Thêm chi tiết đơn hàng
+-- THÊM CHI TIẾT ĐƠN HÀNG
 INSERT INTO ChiTietDonHang (MaDH, MaSP, SoLuong, DonGia)
 VALUES 
 (1, 1, 1, 13500000),
 (1, 5, 1, 500000),
 (2, 2, 1, 18500000);
 
--- Thêm đánh giá
-INSERT INTO DanhGia (UserID, MaSP, NoiDung, Diem)
+-- THÊM ĐÁNH GIÁ
+INSERT INTO DanhGia (Username, MaSP, NoiDung, Diem)
 VALUES 
-(2, 1, N'Sản phẩm tốt, chạy mượt', 5),
-(3, 2, N'Đóng gói cẩn thận, hiệu năng ổn', 4);
+('khach1', 1, N'Sản phẩm tốt, chạy mượt', 5),
+('khach2', 2, N'Đóng gói cẩn thận, hiệu năng ổn', 4);
 
--- Truy vấn doanh thu (ví dụ)
--- SELECT 
---     CONVERT(DATE, NgayLap) AS Ngay,
---     SUM(TongTien) AS DoanhThu
--- FROM DonHang
--- WHERE TrangThai = 'Đã thanh toán'
--- GROUP BY CONVERT(DATE, NgayLap);
-SELECT name FROM sys.databases;
+select * from Users
