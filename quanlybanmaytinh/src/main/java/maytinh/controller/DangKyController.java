@@ -4,6 +4,10 @@
  */
 package maytinh.controller;
 
+import javax.swing.JFrame;
+import maytinh.ui.Manchay;
+import maytinh.util.XDialog;
+
 /**
  *
  * @author Cong Nam
@@ -11,4 +15,10 @@ package maytinh.controller;
 public interface DangKyController {
       void open();
     void register();
+        default void exit() {
+        if (XDialog.confirm("Bạn muốn kết thúc?")) {
+            System.exit(0);
+        }
+    }
+
 }

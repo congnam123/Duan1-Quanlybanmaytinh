@@ -4,6 +4,8 @@
  */
 package maytinh.impl;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 import maytinh.dao.UserDAO;
 import maytinh.entity.User;
@@ -80,5 +82,35 @@ public void insert(User user) {
     );
 }
 
+ @Override
+public User findByUsernameAndPassword(String username, String password) {
+    String sql = "SELECT * FROM Users WHERE username = ? AND password = ?";
+    return XQuery.getSingleBean(User.class, sql, username, password);
+}
+
+
+@Override
+public User findByEmail(String email) {
+    String sql = "SELECT * FROM Users WHERE Email = ?";
+    try {
+        ResultSet rs = XJdbc.query(sql, email);
+        if (rs.next()) {
+            return readFromResultSet(rs);
+        }
+    } catch (Exception e) {
+        throw new RuntimeException(e);
+    }
+    return null;
+}
+private User readFromResultSet(ResultSet rs) throws SQLException {
+    User user = new User();
+    user.setUsername(rs.getString("Username"));
+    user.setPassword(rs.getString("Password"));
+    user.setFullname(rs.getString("Fullname"));
+    user.setManager(rs.getBoolean("Manager"));
+    user.setEnabled(rs.getBoolean("Enabled"));
+    user.setPhoto(rs.getString("Photo"));
+    return user;
+}
 
 }

@@ -4,18 +4,22 @@
  */
 package maytinh.ui;
 
+import java.awt.Frame;
+import javax.swing.JFrame;
+import maytinh.controller.OtpServiceController;
 import maytinh.controller.dangNhapConTroller;
 import maytinh.dao.UserDAO;
 import maytinh.entity.User;
+import maytinh.impl.EmailOtpServiceimpl;
 import maytinh.impl.UserDAOImpl;
 import maytinh.util.XDialog;
 import maytinh.util.XAuth;
 
 /**
  *
- * @author 
+ * @author
  */
-public class dangNhap extends javax.swing.JDialog implements dangNhapConTroller{
+public class dangNhap extends javax.swing.JDialog implements dangNhapConTroller {
 
     /**
      * Creates new form dangNhap
@@ -23,6 +27,10 @@ public class dangNhap extends javax.swing.JDialog implements dangNhapConTroller{
     public dangNhap(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        this.setLocationRelativeTo(null);
+       this.showJDialog(new Manchay(this, true));
+
+
     }
 
     /**
@@ -39,16 +47,20 @@ public class dangNhap extends javax.swing.JDialog implements dangNhapConTroller{
         jLabel5 = new javax.swing.JLabel();
         txtUsername = new javax.swing.JTextField();
         txtPassword = new javax.swing.JPasswordField();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        btnLogin = new javax.swing.JButton();
+        btnForgotPassword = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        jButton3 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel1.setText("Đăng nhập");
 
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel4.setText("Tên đăng nhập");
 
+        jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel5.setText("Mật khẩu ");
 
         txtUsername.addActionListener(new java.awt.event.ActionListener() {
@@ -57,17 +69,27 @@ public class dangNhap extends javax.swing.JDialog implements dangNhapConTroller{
             }
         });
 
-        jButton1.setText("Đăng nhập");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnLogin.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnLogin.setText("Đăng nhập");
+        btnLogin.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnLoginActionPerformed(evt);
             }
         });
 
-        jButton2.setText("Đăng ký");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        btnForgotPassword.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnForgotPassword.setText("Quên mật khẩu ?");
+        btnForgotPassword.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                btnForgotPasswordActionPerformed(evt);
+            }
+        });
+
+        jButton3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jButton3.setText("Đăng ký");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
             }
         });
 
@@ -76,42 +98,55 @@ public class dangNhap extends javax.swing.JDialog implements dangNhapConTroller{
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(131, 131, 131)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(34, 34, 34)
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
-                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(27, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(42, 42, 42)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 318, Short.MAX_VALUE)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(txtUsername)
-                    .addComponent(txtPassword))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 318, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(77, 77, 77))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(144, 144, 144))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(144, 144, 144))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(btnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(53, 53, 53)
+                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(28, 28, 28))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(btnForgotPassword)
+                        .addContainerGap())))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel1)
-                .addGap(21, 21, 21)
-                .addComponent(jLabel4)
-                .addGap(10, 10, 10)
-                .addComponent(txtUsername, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(25, 25, 25)
-                .addComponent(jLabel5)
-                .addGap(10, 10, 10)
-                .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2))
-                .addGap(25, 25, 25))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addGap(26, 26, 26)
+                        .addComponent(jLabel4)
+                        .addGap(10, 10, 10)
+                        .addComponent(txtUsername, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(25, 25, 25)
+                        .addComponent(jLabel5)
+                        .addGap(10, 10, 10)
+                        .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnLogin)
+                            .addComponent(jButton3))))
+                .addGap(34, 34, 34)
+                .addComponent(btnForgotPassword)
+                .addGap(14, 14, 14))
         );
 
         pack();
@@ -121,23 +156,63 @@ public class dangNhap extends javax.swing.JDialog implements dangNhapConTroller{
         // TODO add your handling code here:
     }//GEN-LAST:event_txtUsernameActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
         this.login();
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_btnLoginActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton2ActionPerformed
+    private void btnForgotPasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnForgotPasswordActionPerformed
+        String email = javax.swing.JOptionPane.showInputDialog(this, "Nhập địa chỉ email đã đăng ký:");
+
+        if (email == null || email.trim().isEmpty()) {
+            return;
+        }
+
+        UserDAO dao = new UserDAOImpl();
+        User user = dao.findByEmail(email); // bạn cần thêm hàm này trong DAO
+
+        if (user == null) {
+            XDialog.alert("Không tìm thấy tài khoản nào với email này!");
+            return;
+        }
+
+        try {
+            OtpServiceController otpService = new EmailOtpServiceimpl(email); // Interface bạn đã có
+            otpService.generate(email);
+
+            String inputOtp = javax.swing.JOptionPane.showInputDialog(this, "Nhập mã OTP vừa gửi:");
+            if (inputOtp == null || !otpService.validate(inputOtp.trim())) {
+                XDialog.alert("Mã OTP không đúng hoặc đã hết hạn!");
+                return;
+            }
+
+            String newPassword = javax.swing.JOptionPane.showInputDialog(this, "Nhập mật khẩu mới:");
+            String confirm = javax.swing.JOptionPane.showInputDialog(this, "Xác nhận mật khẩu:");
+
+            if (newPassword == null || confirm == null || !newPassword.equals(confirm)) {
+                XDialog.alert("Mật khẩu xác nhận không khớp!");
+                return;
+            }
+
+            user.setPassword(newPassword);
+            dao.update(user); // bạn cần có method update(User user)
+            XDialog.alert("Đặt lại mật khẩu thành công!");
+
+        } catch (Exception e) {
+            XDialog.alert("Lỗi gửi OTP: " + e.getMessage());
+        }
+
+    }//GEN-LAST:event_btnForgotPasswordActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        DangKy dk = new DangKy((java.awt.Frame) this.getParent(), true);
+        dk.setVisible(true);        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton3ActionPerformed
 
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
@@ -145,85 +220,97 @@ public class dangNhap extends javax.swing.JDialog implements dangNhapConTroller{
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(dangNhap.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(dangNhap.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(dangNhap.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(dangNhap.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
+        //</editor-fold>
 
-        /* Create and display the dialog */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                dangNhap dialog = new dangNhap(new javax.swing.JFrame(), true);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    @Override
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
+        /* Create and display the login dialog */
+        java.awt.EventQueue.invokeLater(() -> {
+            dangNhap dialog = new dangNhap(new javax.swing.JFrame(), true);
+            dialog.setVisible(true); // chờ đăng nhập
+
+            // Sau khi đóng dialog, kiểm tra đăng nhập
+            if (maytinh.util.XAuth.user != null) {
+                if (maytinh.util.XAuth.user.isManager()) {
+                    // Nếu là quản lý (admin)
+                    new manhinhchinhadmin(null, true).setVisible(true);
+                } else {
+                    // Nếu là người dùng thường
+                    new manhinhchinhkhachhang(null, true).setVisible(true);
+                }
+            } else {
+                // Không đăng nhập => thoát chương trình
+                System.exit(0);
             }
         });
     }
-    
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton btnForgotPassword;
+    private javax.swing.JButton btnLogin;
+    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPasswordField txtPassword;
     private javax.swing.JTextField txtUsername;
     // End of variables declaration//GEN-END:variables
-
     @Override
     public void open() {
         this.setLocationRelativeTo(null);
     }
-    @Override
-public void login() {
-    String username = txtUsername.getText().trim();
-    String password = txtPassword.getText().trim();
 
-    if (username.equals("") || password.equals("")) {
-        XDialog.alert("Vui lòng nhập đầy đủ tên đăng nhập và mật khẩu!");
-    } else if (username.length() < 3 || username.length() > 20) {
-        XDialog.alert("Tên đăng nhập phải từ 3 đến 20 ký tự!");
-    } else if (password.length() < 6 || password.length() > 30) {
-        XDialog.alert("Mật khẩu phải từ 6 đến 30 ký tự!");
-    } else {
-        UserDAO userDao = new UserDAOImpl();
-        User user = userDao.findById(username);
+    @Override
+    public void login() {
+        String username = txtUsername.getText().trim();
+        String password = new String(txtPassword.getPassword()).trim();
+
+        if (username.isEmpty() || password.isEmpty()) {
+            XDialog.alert("Vui lòng nhập đầy đủ tên đăng nhập và mật khẩu!");
+            return;
+        }
+
+        UserDAO dao = new UserDAOImpl();
+        User user = dao.findByUsernameAndPassword(username, password);
 
         if (user == null) {
-            XDialog.alert("Tên đăng nhập không tồn tại!");
-        } else if (!password.equals(user.getPassword())) {
-            XDialog.alert("Mật khẩu không chính xác!");
-        } else if (!user.isEnabled()) {
-            XDialog.alert("Tài khoản đã bị khóa!");
+            XDialog.alert("Sai tên đăng nhập, mật khẩu hoặc tài khoản bị khóa!");
         } else {
-    XAuth.user = user;
-    XDialog.alert("Đăng nhập thành công! Chào " + user.getFullname());
+            XAuth.user = user;
+            XDialog.alert("Đăng nhập thành công! Xin chào " + user.getFullname());
 
-    // 👉 Mở giao diện chính
-    Giaodienchinh gd = new Giaodienchinh((java.awt.Frame) this.getParent(), true);
-    gd.setVisible(true);
+            if (user.isManager()) {
+                new manhinhchinhadmin(null, true).setVisible(true);
+            } else {
+                new manhinhchinhkhachhang(null, true).setVisible(true);
+            }
 
-    // 👉 Đóng form đăng nhập
-    this.dispose();
-}
+            this.dispose();
+        }
 
     }
-}
+
+    @Override
+    public void dangky() {
+        DangKy dialog = new DangKy((Frame) this.getParent(), true);
+        dialog.setVisible(true);
+    }
 
     @Override
     public void exit() {
-        dangNhapConTroller.super.exit(); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
+        dangNhapConTroller.super.exit();
     }
+
+    @Override
+    public void init() {
+
+this.showWelcomeJDialog();
+
+
+    }
+
 }

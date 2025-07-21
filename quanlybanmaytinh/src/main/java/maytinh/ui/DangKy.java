@@ -4,15 +4,18 @@
  */
 package maytinh.ui;
 
+import javax.swing.JOptionPane;
 import maytinh.controller.DangKyController;
 import maytinh.dao.UserDAO;
 import maytinh.entity.User;
 import maytinh.impl.UserDAOImpl;
+import maytinh.util.Mailer;
+import maytinh.util.OtpUtil;
 import maytinh.util.XDialog;
 
 /**
  *
- * @author 
+ * @author
  */
 public class DangKy extends javax.swing.JDialog implements DangKyController {
 
@@ -22,6 +25,7 @@ public class DangKy extends javax.swing.JDialog implements DangKyController {
     public DangKy(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        this.setLocationRelativeTo(null);
     }
 
     /**
@@ -33,20 +37,20 @@ public class DangKy extends javax.swing.JDialog implements DangKyController {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        btnCancel = new javax.swing.JButton();
+        jLabel4 = new javax.swing.JLabel();
         txtUsername = new javax.swing.JTextField();
         txtPassword = new javax.swing.JPasswordField();
-        txtConfirm = new javax.swing.JPasswordField();
+        txtConfirmPassword = new javax.swing.JPasswordField();
         jLabel5 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
         btnDangKy = new javax.swing.JButton();
+        jLabel6 = new javax.swing.JLabel();
+        btnCancel = new javax.swing.JButton();
+        txtGmail = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-
-        btnCancel.setText("Nút Hủy\t");
 
         jLabel5.setText("Đăng ký");
 
@@ -63,67 +67,95 @@ public class DangKy extends javax.swing.JDialog implements DangKyController {
             }
         });
 
+        jLabel6.setText("Gmail");
+
+        btnCancel.setText("Nút Hủy\t");
+        btnCancel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(51, 51, 51)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(btnDangKy, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(0, 75, Short.MAX_VALUE)
-                                .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(txtUsername)
-                            .addComponent(txtPassword)
-                            .addComponent(txtConfirm))
-                        .addGap(48, 48, 48))))
+                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(239, Short.MAX_VALUE))
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(49, 49, 49)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(btnDangKy, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(73, 73, 73))
+                        .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 114, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(txtGmail)
+                        .addGroup(layout.createSequentialGroup()
+                            .addGap(0, 0, Short.MAX_VALUE)
+                            .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(txtUsername)
+                        .addComponent(txtPassword)
+                        .addComponent(txtConfirmPassword))
+                    .addGap(50, 50, 50)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel5)
-                        .addGap(7, 7, 7)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel2)
-                            .addComponent(txtUsername, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel4)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel1)
-                            .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel3)
-                            .addComponent(txtConfirm, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(166, 166, 166)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(btnCancel)
-                            .addComponent(btnDangKy))))
-                .addContainerGap(12, Short.MAX_VALUE))
+                .addGap(57, 57, 57)
+                .addComponent(jLabel4)
+                .addContainerGap(172, Short.MAX_VALUE))
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addContainerGap()
+                    .addComponent(jLabel5)
+                    .addGap(7, 7, 7)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel2)
+                        .addComponent(txtUsername, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGap(12, 12, 12)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(jLabel6)
+                        .addComponent(txtGmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                            .addGap(18, 18, 18)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabel1)
+                                .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabel3)
+                                .addComponent(txtConfirmPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(layout.createSequentialGroup()
+                            .addGap(115, 115, 115)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(btnCancel)
+                                .addComponent(btnDangKy))))
+                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnDangKyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDangKyActionPerformed
-this.register();
+        this.register();
     }//GEN-LAST:event_btnDangKyActionPerformed
+
+    private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
+        // TODO add your handling code here:
+        this.dispose(); // đóng dialog
+    }//GEN-LAST:event_btnCancelActionPerformed
 
     /**
      * @param args the command line arguments
@@ -151,6 +183,9 @@ this.register();
             java.util.logging.Logger.getLogger(DangKy.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
 
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -175,60 +210,95 @@ this.register();
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JPasswordField txtConfirm;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JPasswordField txtConfirmPassword;
+    private javax.swing.JTextField txtGmail;
     private javax.swing.JPasswordField txtPassword;
     private javax.swing.JTextField txtUsername;
     // End of variables declaration//GEN-END:variables
 
-    @Override
+       @Override
     public void open() {
         this.setLocationRelativeTo(null);
     }
+    
+@Override
+public void register() {
+    String username = txtUsername.getText().trim();
+    String password = new String(txtPassword.getPassword());
+    String confirm = new String(txtConfirmPassword.getPassword());
+    String toEmail = txtGmail.getText().trim();
 
- @Override
-    public void register() {
-        String username = txtUsername.getText().trim();
-        String password = new String(txtPassword.getPassword());
-        String confirm = new String(txtConfirm.getPassword());
-
-        if (username.isEmpty() || password.isEmpty() || confirm.isEmpty()) {
-            XDialog.alert("Vui lòng nhập đầy đủ thông tin!");
-            return;
-        }
-
-        if (username.length() < 3 || username.length() > 20) {
-            XDialog.alert("Tên đăng nhập phải từ 3 đến 20 ký tự!");
-            return;
-        }
-
-        if (password.length() < 6 || password.length() > 30) {
-            XDialog.alert("Mật khẩu phải từ 6 đến 30 ký tự!");
-            return;
-        }
-
-        if (!password.equals(confirm)) {
-            XDialog.alert("Xác nhận mật khẩu không khớp!");
-            return;
-        }
-
-        UserDAO dao = new UserDAOImpl();
-        if (dao.findById(username) != null) {
-            XDialog.alert("Tên đăng nhập đã tồn tại!");
-            return;
-        }
-
-        // Tạo user mặc định (chỉ cần username, password)
-        User user = new User();
-        user.setUsername(username);
-        user.setPassword(password);
-        user.setEnabled(true);           // tài khoản hoạt động
-        user.setManager(false);          // mặc định không phải quản lý
-        user.setFullname("");            // rỗng
-        user.setPhoto("default.png");    // mặc định
-
-        dao.insert(user);
-        XDialog.alert("Đăng ký thành công!");
-        this.dispose();
+    if (username.isEmpty() || password.isEmpty() || confirm.isEmpty() || toEmail.isEmpty()) {
+        XDialog.alert("Vui lòng nhập đầy đủ thông tin!");
+        return;
     }
+
+    if (!toEmail.matches("^[\\w.-]+@[\\w.-]+\\.[a-zA-Z]{2,}$")) {
+        XDialog.alert("Địa chỉ Gmail không hợp lệ!");
+        return;
+    }
+
+    if (username.length() < 3 || username.length() > 20) {
+        XDialog.alert("Tên đăng nhập phải từ 3 đến 20 ký tự!");
+        return;
+    }
+
+    if (password.length() < 6 || password.length() > 30) {
+        XDialog.alert("Mật khẩu phải từ 6 đến 30 ký tự!");
+        return;
+    }
+
+    if (!password.equals(confirm)) {
+        XDialog.alert("Xác nhận mật khẩu không khớp!");
+        return;
+    }
+
+    UserDAO dao = new UserDAOImpl();
+    if (dao.findById(username) != null) {
+        XDialog.alert("Tên đăng nhập đã tồn tại!");
+        return;
+    }
+
+    try {
+        String otp = OtpUtil.generateOtp(6);
+        String subject = "Mã xác thực OTP đăng ký tài khoản";
+        String content = "Chào bạn,\n\nMã OTP để hoàn tất đăng ký là: " + otp;
+
+        Mailer.send(toEmail, subject, content); // dùng GmailServiceImpl
+        XDialog.alert("Đã gửi mã OTP đến: " + toEmail);
+
+        String otpInput = JOptionPane.showInputDialog(null, "Nhập mã OTP vừa nhận:");
+        if (otpInput == null) {
+            XDialog.alert("Đăng ký bị huỷ.");
+            return;
+        }
+
+        if (!otp.equals(otpInput)) {
+            XDialog.alert("Mã OTP không đúng!");
+            return;
+        }
+
+    } catch (Exception e) {
+        XDialog.alert("Gửi OTP thất bại: " + e.getMessage());
+        return;
+    }
+
+    User user = new User();
+    user.setUsername(username);
+    user.setPassword(password); // nếu cần bảo mật thì dùng SHA256
+    user.setFullname("Người dùng mới"); // vì chưa có trường fullname trên giao diện
+    user.setPhoto("default.png");
+    user.setEnabled(true);
+    user.setManager(false);
+
+    dao.insert(user);
+    XDialog.alert("Đăng ký thành công!");
+    this.dispose();
 }
 
+    @Override
+    public void exit() {
+        DangKyController.super.exit();
+}
+}

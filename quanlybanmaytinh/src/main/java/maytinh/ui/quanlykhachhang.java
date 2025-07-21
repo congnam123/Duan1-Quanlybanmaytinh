@@ -4,18 +4,29 @@
  */
 package maytinh.ui;
 
+import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import maytinh.controller.KhachHangController;
+import maytinh.dao.NguoiDungDao;
+import maytinh.entity.MsgBox;
+import maytinh.entity.NguoiDung;
+import maytinh.impl.NguoiDungDaoImpl;
+
 /**
  *
  * @author Cong Nam
  */
-public class quanlykhachhang extends javax.swing.JDialog {
+public class quanlykhachhang extends javax.swing.JDialog implements KhachHangController {
 
-    /**
-     * Creates new form quanlykhachhang
-     */
+    NguoiDungDao dao = new NguoiDungDaoImpl();
+    List<NguoiDung> list;
+
     public quanlykhachhang(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        open();
+
     }
 
     /**
@@ -28,37 +39,53 @@ public class quanlykhachhang extends javax.swing.JDialog {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        jTextField1 = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        tblKhachHang = new javax.swing.JTable();
+        txtTimKiem = new javax.swing.JTextField();
+        btnTimKiem = new javax.swing.JButton();
+        btnCapNhat = new javax.swing.JButton();
+        btnXoa = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tblKhachHang.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
             },
             new String [] {
-                "Họ tên", "Ngày sinh", "Địa chỉ", "Số điện thoại", "Phân loại", "Tổng đơn đã mua"
+                "UserName", "Họ Tên", "Ngày sinh", "Địa chỉ", "Số điện thoại", "Phân loại", "Tổng đơn hàng đã mua"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, true, true
+                false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tblKhachHang);
 
-        jButton1.setText("Tìm kiếm");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnTimKiem.setText("Tìm kiếm");
+        btnTimKiem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnTimKiemActionPerformed(evt);
+            }
+        });
+
+        btnCapNhat.setText("Cập nhật");
+        btnCapNhat.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCapNhatActionPerformed(evt);
+            }
+        });
+
+        btnXoa.setText("Xóa");
+        btnXoa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnXoaActionPerformed(evt);
             }
         });
 
@@ -66,31 +93,56 @@ public class quanlykhachhang extends javax.swing.JDialog {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 659, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1)
-                .addGap(76, 76, 76))
+                .addContainerGap(633, Short.MAX_VALUE)
+                .addComponent(txtTimKiem, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnTimKiem)
+                .addGap(70, 70, 70))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(251, 251, 251)
+                .addComponent(btnCapNhat)
+                .addGap(27, 27, 27)
+                .addComponent(btnXoa)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(62, Short.MAX_VALUE)
+                .addContainerGap(90, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1))
-                .addGap(35, 35, 35)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtTimKiem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnTimKiem))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(26, 26, 26)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnCapNhat)
+                    .addComponent(btnXoa))
+                .addGap(12, 12, 12))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btnTimKiemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTimKiemActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+        timKiem();
+    }//GEN-LAST:event_btnTimKiemActionPerformed
+
+    private void btnCapNhatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCapNhatActionPerformed
+        // TODO add your handling code here:
+        this.updateNguoiDung();
+    }//GEN-LAST:event_btnCapNhatActionPerformed
+
+    private void btnXoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaActionPerformed
+        // TODO add your handling code here:
+        this.deleteNguoiDung();
+    }//GEN-LAST:event_btnXoaActionPerformed
 
     /**
      * @param args the command line arguments
@@ -118,6 +170,9 @@ public class quanlykhachhang extends javax.swing.JDialog {
             java.util.logging.Logger.getLogger(quanlykhachhang.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
 
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -135,9 +190,115 @@ public class quanlykhachhang extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton btnCapNhat;
+    private javax.swing.JButton btnTimKiem;
+    private javax.swing.JButton btnXoa;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTable tblKhachHang;
+    private javax.swing.JTextField txtTimKiem;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void open() {
+        setLocationRelativeTo(null);
+        fillToTable();
+    }
+
+    public void fillToTable() {
+        DefaultTableModel model = (DefaultTableModel) tblKhachHang.getModel();
+        model.setRowCount(0);
+        try {
+            List<NguoiDung> list = dao.findAll();
+            for (NguoiDung nd : list) {
+                model.addRow(new Object[]{
+                    nd.getUsername(),
+                    nd.getFullname(),
+                    nd.getNgaySinh(),
+                    nd.getDiaChi(),
+                    nd.getSoDienThoai(),
+                    nd.getPhanLoai(), // Thêm cột phân loại
+                    nd.getTongDonHang() // Thêm cột tổng đơn hàng
+                });
+            }
+        } catch (Exception e) {
+            MsgBox.alert(this, "Lỗi truy vấn dữ liệu!");
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void timKiem() {
+        String keyword = txtTimKiem.getText().trim();
+        DefaultTableModel model = (DefaultTableModel) tblKhachHang.getModel();
+        model.setRowCount(0);
+
+        try {
+            list = dao.findByUsername(keyword); // 🔍 Đổi sang tìm theo Username
+            for (NguoiDung nd : list) {
+                int tongDon = dao.getTongDonHang(nd.getUsername());
+                nd.setTongDonHang(tongDon);
+
+                model.addRow(new Object[]{
+                    nd.getUsername(),
+                    nd.getFullname(),
+                    nd.getNgaySinh(),
+                    nd.getDiaChi(),
+                    nd.getSoDienThoai(),
+                    nd.getPhanLoai(),
+                    nd.getTongDonHang()
+                });
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            MsgBox.alert(this, "Lỗi tìm kiếm!");
+        }
+    }
+
+    private void deleteNguoiDung() {
+        int selectedRow = tblKhachHang.getSelectedRow();
+        if (selectedRow >= 0) {
+            String username = (String) tblKhachHang.getValueAt(selectedRow, 0);
+            NguoiDung nd = (NguoiDung) dao.findByUsername(username); // lấy dữ liệu đầy đủ từ DB
+
+            CapNhatKhachHang dialog = new CapNhatKhachHang(null, nd);
+            dialog.setVisible(true);
+
+            if (dialog.isUpdated()) {
+                dao.update(dialog.getUpdatedNguoiDung());
+                fillToTable();
+
+            }
+        }
+    }
+
+    private void updateNguoiDung() {
+        int selectedRow = tblKhachHang.getSelectedRow();
+        if (selectedRow >= 0) {
+            try {
+                String username = (String) tblKhachHang.getValueAt(selectedRow, 0);
+
+                // Lấy thông tin người dùng từ database
+                NguoiDung nd = dao.findByUsername(username).get(0);
+
+                // Gọi dialog cập nhật
+                CapNhatKhachHang dialog = new CapNhatKhachHang(null, nd);
+                dialog.setLocationRelativeTo(this);
+                dialog.setVisible(true);
+
+                // Nếu người dùng nhấn Lưu và dữ liệu được cập nhật
+                if (dialog.isUpdated()) {
+                    dao.update(dialog.getUpdatedNguoiDung()); // Cập nhật vào DB
+                    fillToTable(); // Load lại bảng
+                    JOptionPane.showMessageDialog(this, "Cập nhật thành công!");
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                JOptionPane.showMessageDialog(this, "Lỗi khi cập nhật!");
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Vui lòng chọn người dùng để cập nhật!");
+        }
+    }
+
 }

@@ -103,7 +103,7 @@ public class XJdbc {
     /**
      * Tạo PreparedStatement từ câu lệnh SQL và đối số
      */
-    private static PreparedStatement prepareStatement(String sql, Object... args) throws SQLException {
+    public static PreparedStatement prepareStatement(String sql, Object... args) throws SQLException {
         openConnection();
         PreparedStatement stmt = connection.prepareStatement(sql);
         for (int i = 0; i < args.length; i++) {
@@ -156,4 +156,28 @@ public class XJdbc {
             throw new RuntimeException("Không tìm thấy driver SQL Server", e);
         }
     }
+
+public static ResultSet query(String sql, Object... args) {
+    try {
+        PreparedStatement stmt = prepareStatement(sql, args);
+        return stmt.executeQuery(); // ← phải trả về ResultSet
+    } catch (Exception e) {
+        throw new RuntimeException(e);
+    }
+}
+public static int updateWithResult(String sql, Object... args) {
+    try (
+        Connection conn = getConnection();
+        PreparedStatement stmt = conn.prepareStatement(sql);
+    ) {
+        for (int i = 0; i < args.length; i++) {
+            stmt.setObject(i + 1, args[i]);
+        }
+        return stmt.executeUpdate(); // Trả về số dòng bị ảnh hưởng
+    } catch (SQLException e) {
+        throw new RuntimeException(e);
+    }
+}
+
+
 }

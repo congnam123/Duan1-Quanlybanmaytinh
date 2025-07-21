@@ -4,18 +4,27 @@
  */
 package maytinh.ui;
 
+import java.util.List;
+import javax.swing.JComboBox;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
+import maytinh.controller.QuanlydanhgiaController;
+import maytinh.entity.DanhGia;
+import maytinh.impl.DanhGiaDAOImpl;
+
 /**
  *
  * @author Cong Nam
  */
-public class quanlydanhgia extends javax.swing.JDialog {
+public class quanlydanhgia extends javax.swing.JDialog implements QuanlydanhgiaController {
 
-    /**
-     * Creates new form quanlydanhgia
-     */
+    DanhGiaDAOImpl dao = new DanhGiaDAOImpl();
+
     public quanlydanhgia(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        fillToTable(tblDanhGia);
     }
 
     /**
@@ -28,13 +37,15 @@ public class quanlydanhgia extends javax.swing.JDialog {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        jTextField1 = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        tblDanhGia = new javax.swing.JTable();
+        txtSearch = new javax.swing.JTextField();
+        btnTimKiem = new javax.swing.JButton();
+        cboSoSao = new javax.swing.JComboBox<>();
+        btnLoc = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tblDanhGia.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null},
                 {null, null, null, null, null, null},
@@ -45,9 +56,23 @@ public class quanlydanhgia extends javax.swing.JDialog {
                 "Mã đánh giá", "Người dùng", "Sản phẩm", "Số sao", "Nội dung", "Ngày đánh giá"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tblDanhGia);
 
-        jButton1.setText("Tìm kiếm");
+        btnTimKiem.setText("Tìm kiếm");
+        btnTimKiem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTimKiemActionPerformed(evt);
+            }
+        });
+
+        cboSoSao.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Tất cả", "5 sao", "4 sao", "3 sao", "2 sao", "1 sao" }));
+
+        btnLoc.setText("Lọc");
+        btnLoc.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLocActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -56,18 +81,24 @@ public class quanlydanhgia extends javax.swing.JDialog {
             .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 690, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton1)
-                .addGap(102, 102, 102))
+                .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnTimKiem)
+                .addGap(29, 29, 29)
+                .addComponent(cboSoSao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(7, 7, 7)
+                .addComponent(btnLoc)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(63, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1))
+                    .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnTimKiem)
+                    .addComponent(cboSoSao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnLoc))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 246, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -75,6 +106,16 @@ public class quanlydanhgia extends javax.swing.JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnTimKiemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTimKiemActionPerformed
+        // TODO add your handling code here:
+        timKiemDanhGia(tblDanhGia, txtSearch);
+    }//GEN-LAST:event_btnTimKiemActionPerformed
+
+    private void btnLocActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLocActionPerformed
+        // TODO add your handling code here:
+        locDanhGiaTheoSao(tblDanhGia, cboSoSao);
+    }//GEN-LAST:event_btnLocActionPerformed
 
     /**
      * @param args the command line arguments
@@ -119,9 +160,67 @@ public class quanlydanhgia extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton btnLoc;
+    private javax.swing.JButton btnTimKiem;
+    private javax.swing.JComboBox<String> cboSoSao;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTable tblDanhGia;
+    private javax.swing.JTextField txtSearch;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void fillToTable(JTable table) {
+        DefaultTableModel model = (DefaultTableModel) table.getModel();
+        model.setRowCount(0);
+        for (DanhGia dg : dao.getAll()) {
+            model.addRow(new Object[]{
+                dg.getMaDG(),
+                dg.getUsername(),
+                dg.getMaSP(),
+                dg.getDiem(),
+                dg.getNoiDung(),
+                dg.getNgayDanhGia()
+            });
+        }
+    }
+
+    @Override
+    public void timKiemDanhGia(JTable table, JTextField txtSearch) {
+        String keyword = txtSearch.getText().trim();
+        List<DanhGia> list = dao.searchByKeyword(keyword);
+        DefaultTableModel model = (DefaultTableModel) table.getModel();
+        model.setRowCount(0);
+        for (DanhGia dg : list) {
+            model.addRow(new Object[]{
+                dg.getMaDG(),
+                dg.getUsername(),
+                dg.getMaSP(),
+                dg.getDiem(),
+                dg.getNoiDung(),
+                dg.getNgayDanhGia()
+            });
+        }
+    }
+
+    @Override
+    public void locDanhGiaTheoSao(JTable table, javax.swing.JComboBox comboBox) {
+        String selected = comboBox.getSelectedItem().toString(); // "Tất cả", "5 sao", ...
+        DefaultTableModel model = (DefaultTableModel) table.getModel();
+        model.setRowCount(0);
+
+        for (DanhGia dg : dao.getAll()) {
+            String soSao = dg.getDiem() + " sao";
+            if (selected.equals("Tất cả") || soSao.equals(selected)) {
+                model.addRow(new Object[]{
+                    dg.getMaDG(),
+                    dg.getUsername(),
+                    dg.getMaSP(),
+                    dg.getDiem(),
+                    dg.getNoiDung(),
+                    dg.getNgayDanhGia()
+                });
+            }
+        }
+    }
+
 }

@@ -1,23 +1,26 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package maytinh.util;
 
 import maytinh.entity.User;
 
 /**
- *
- * @author Admin
+ * Lớp XAuth dùng để lưu thông tin người dùng đã đăng nhập
  */
 public class XAuth {
 
-    public static User user = User.builder()
-            .username("user1@gmail.com")
-            .password("123")
-            .enabled(true)
-            .manager(true)
-            .fullname("Nguyễn Văn Tèo")
-            .photo("trump.png")
-            .build(); // biến user này sẽ được thay thế sau khi đăng nhập
+    // Biến lưu người dùng hiện tại, sẽ được gán sau khi đăng nhập thành công
+    public static User user = null;
+
+    /**
+     * Kiểm tra đã đăng nhập chưa
+     */
+    public static boolean isLogin() {
+        return user != null;
+    }
+
+    /**
+     * Đăng xuất
+     */
+    public static void logoff() {
+        user = null;
+    }
 }

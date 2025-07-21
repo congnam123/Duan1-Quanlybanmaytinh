@@ -4,18 +4,29 @@
  */
 package maytinh.ui;
 
+import java.sql.ResultSet;
+import java.text.DecimalFormat;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
+import maytinh.controller.QuanlybanhangController;
+import maytinh.impl.QuanlybanhangImpl;
+import maytinh.util.XJdbc;
+
 /**
  *
  * @author Cong Nam
  */
-public class quanlybanhang extends javax.swing.JDialog {
+public class quanlybanhang extends javax.swing.JDialog implements QuanlybanhangController {
 
-    /**
-     * Creates new form quanlybanhang
-     */
+    QuanlybanhangImpl dao = new QuanlybanhangImpl();
+    DefaultTableModel model;
+
     public quanlybanhang(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        fillToTable(tblDonHang);
     }
 
     /**
@@ -27,25 +38,30 @@ public class quanlybanhang extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        btnCapNhat = new javax.swing.JButton();
+        btnXoa = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        jTextField1 = new javax.swing.JTextField();
-        jButton3 = new javax.swing.JButton();
+        tblDonHang = new javax.swing.JTable();
+        txtTimKiem = new javax.swing.JTextField();
+        btnTimKiem = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        jButton1.setText("Sửa ");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnCapNhat.setText("Cập Nhật");
+        btnCapNhat.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnCapNhatActionPerformed(evt);
             }
         });
 
-        jButton2.setText("Xóa");
+        btnXoa.setText("Xóa");
+        btnXoa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnXoaActionPerformed(evt);
+            }
+        });
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tblDonHang.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null},
                 {null, null, null, null, null, null},
@@ -64,9 +80,14 @@ public class quanlybanhang extends javax.swing.JDialog {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tblDonHang);
 
-        jButton3.setText("Tìm kiếm");
+        btnTimKiem.setText("Tìm kiếm");
+        btnTimKiem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTimKiemActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -74,9 +95,9 @@ public class quanlybanhang extends javax.swing.JDialog {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(118, 118, 118)
-                .addComponent(jButton1)
+                .addComponent(btnCapNhat)
                 .addGap(27, 27, 27)
-                .addComponent(jButton2)
+                .addComponent(btnXoa)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
@@ -84,9 +105,9 @@ public class quanlybanhang extends javax.swing.JDialog {
                 .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtTimKiem, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton3)
+                .addComponent(btnTimKiem)
                 .addGap(93, 93, 93))
         );
         layout.setVerticalGroup(
@@ -94,23 +115,34 @@ public class quanlybanhang extends javax.swing.JDialog {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(60, 60, 60)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton3))
+                    .addComponent(txtTimKiem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnTimKiem))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 271, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2))
+                    .addComponent(btnCapNhat)
+                    .addComponent(btnXoa))
                 .addContainerGap(17, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btnCapNhatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCapNhatActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+        this.capNhatDonHang(tblDonHang);
+    }//GEN-LAST:event_btnCapNhatActionPerformed
+
+    private void btnTimKiemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTimKiemActionPerformed
+        // TODO add your handling code here:
+        timKiemDonHang(tblDonHang, txtTimKiem);
+    }//GEN-LAST:event_btnTimKiemActionPerformed
+
+    private void btnXoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaActionPerformed
+        // TODO add your handling code here:
+        xoaDonHang(tblDonHang);
+    }//GEN-LAST:event_btnXoaActionPerformed
 
     /**
      * @param args the command line arguments
@@ -155,11 +187,140 @@ public class quanlybanhang extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
+    private javax.swing.JButton btnCapNhat;
+    private javax.swing.JButton btnTimKiem;
+    private javax.swing.JButton btnXoa;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTable tblDonHang;
+    private javax.swing.JTextField txtTimKiem;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void fillToTable(JTable tblDonHang) {
+        String sql = "SELECT u.Fullname AS TenKhachHang, sp.TenSP, ctdh.SoLuong, dh.TongTien, dh.PhuongThucThanhToan, dh.TrangThai "
+                + "FROM DonHang dh "
+                + "JOIN Users u ON dh.Username = u.Username "
+                + "JOIN ChiTietDonHang ctdh ON dh.MaDH = ctdh.MaDH "
+                + "JOIN SanPham sp ON ctdh.MaSP = sp.MaSP";
+
+        try {
+            ResultSet rs = XJdbc.query(sql);
+            DefaultTableModel model = (DefaultTableModel) tblDonHang.getModel();
+            model.setRowCount(0); // Xóa dữ liệu cũ
+
+            DecimalFormat df = new DecimalFormat("#,###"); // Format tiền
+
+            while (rs.next()) {
+                String tenKhachHang = rs.getString("TenKhachHang");
+                String tenSanPham = rs.getString("TenSP");
+                int soLuong = rs.getInt("SoLuong");
+                double tongTien = rs.getDouble("TongTien");
+                String phuongThuc = rs.getString("PhuongThucThanhToan");
+                String trangThai = rs.getString("TrangThai");
+
+                String tongTienFormatted = df.format(tongTien) + " đ";
+
+                Object[] row = new Object[]{
+                    tenKhachHang,
+                    tenSanPham,
+                    soLuong,
+                    tongTienFormatted,
+                    phuongThuc,
+                    trangThai
+                };
+                model.addRow(row);
+            }
+
+            rs.getStatement().getConnection().close(); // Đóng kết nối
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Lỗi truy vấn dữ liệu đơn hàng!");
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void timKiemDonHang(JTable tblDonHang, JTextField txtTimKiem) {
+        DefaultTableModel model = (DefaultTableModel) tblDonHang.getModel();
+        model.setRowCount(0);
+
+        try {
+            String keyword = "%" + txtTimKiem.getText().trim() + "%";
+            String sql = "SELECT TenKH, SanPham, SoLuong, TongTien, PhuongThuc, TrangThai FROM DonHang WHERE TenKH LIKE ?";
+            ResultSet rs = XJdbc.query(sql, keyword);
+
+            while (rs.next()) {
+                Object[] row = {
+                    rs.getString("TenKH"),
+                    rs.getString("SanPham"),
+                    rs.getInt("SoLuong"),
+                    rs.getDouble("TongTien"),
+                    rs.getString("PhuongThuc"),
+                    rs.getString("TrangThai")
+                };
+                model.addRow(row);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void capNhatDonHang(JTable tblDonHang) {
+        int row = tblDonHang.getSelectedRow();
+        if (row >= 0) {
+            String tenKH = (String) tblDonHang.getValueAt(row, 0);
+            String tenSP = (String) tblDonHang.getValueAt(row, 1);
+
+            String newTrangThai = JOptionPane.showInputDialog(this, "Nhập trạng thái mới:");
+            if (newTrangThai == null || newTrangThai.isEmpty()) {
+                return;
+            }
+
+            try {
+                String sql = "UPDATE DonHang SET TrangThai = ? WHERE Username = (SELECT Username FROM Users WHERE Fullname = ?) AND MaDH IN (SELECT MaDH FROM ChiTietDonHang ctdh JOIN SanPham sp ON ctdh.MaSP = sp.MaSP WHERE sp.TenSP = ?)";
+                XJdbc.update(sql, newTrangThai, tenKH, tenSP);
+                JOptionPane.showMessageDialog(this, "Cập nhật trạng thái thành công!");
+                fillToTable(tblDonHang);
+            } catch (Exception e) {
+                e.printStackTrace();
+                JOptionPane.showMessageDialog(this, "Lỗi cập nhật trạng thái!");
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Chọn đơn hàng để cập nhật!");
+        }
+    }
+
+    @Override
+    public void xoaDonHang(JTable tblDonHang) {
+        int row = tblDonHang.getSelectedRow();
+        if (row >= 0) {
+            String tenKH = (String) tblDonHang.getValueAt(row, 0);
+            String tenSP = (String) tblDonHang.getValueAt(row, 1);
+
+            int confirm = JOptionPane.showConfirmDialog(this, "Bạn có chắc muốn xóa đơn hàng này?", "Xác nhận", JOptionPane.YES_NO_OPTION);
+            if (confirm != JOptionPane.YES_OPTION) {
+                return;
+            }
+
+            try {
+                // Xóa chi tiết đơn hàng trước
+                String deleteChiTiet = "DELETE FROM ChiTietDonHang WHERE MaDH IN (SELECT MaDH FROM DonHang WHERE Username = (SELECT Username FROM Users WHERE Fullname = ?) AND MaDH IN (SELECT MaDH FROM ChiTietDonHang ctdh JOIN SanPham sp ON ctdh.MaSP = sp.MaSP WHERE sp.TenSP = ?))";
+                XJdbc.update(deleteChiTiet, tenKH, tenSP);
+
+                // Xóa đơn hàng (nếu không còn chi tiết nào nữa)
+                String deleteDonHang = "DELETE FROM DonHang WHERE Username = (SELECT Username FROM Users WHERE Fullname = ?) AND MaDH NOT IN (SELECT MaDH FROM ChiTietDonHang)";
+                XJdbc.update(deleteDonHang, tenKH);
+
+                JOptionPane.showMessageDialog(this, "Xóa đơn hàng thành công!");
+                fillToTable(tblDonHang);
+            } catch (Exception e) {
+                e.printStackTrace();
+                JOptionPane.showMessageDialog(this, "Lỗi khi xóa đơn hàng!");
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Vui lòng chọn đơn hàng để xóa!");
+        }
+    }
+
 }
