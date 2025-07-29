@@ -64,10 +64,10 @@
                       <Group type="102" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="jPanel3" alignment="0" pref="0" max="32767" attributes="0"/>
-                              <Component id="jPanel4" alignment="0" pref="0" max="32767" attributes="0"/>
-                              <Component id="jPanel5" alignment="0" pref="0" max="32767" attributes="0"/>
-                              <Component id="jPanel6" alignment="0" pref="0" max="32767" attributes="0"/>
+                              <Component id="jPanel3" alignment="0" pref="209" max="32767" attributes="0"/>
+                              <Component id="jPanel4" alignment="0" pref="209" max="32767" attributes="0"/>
+                              <Component id="jPanel5" alignment="0" pref="209" max="32767" attributes="0"/>
+                              <Component id="jPanel6" alignment="0" pref="209" max="32767" attributes="0"/>
                               <Component id="jPanel7" alignment="0" max="32767" attributes="0"/>
                               <Component id="jPanel8" alignment="0" max="32767" attributes="0"/>
                               <Component id="jPanel9" alignment="0" max="32767" attributes="0"/>
@@ -468,6 +468,9 @@
                 </Property>
                 <Property name="text" type="java.lang.String" value="&#x110;&#x103;ng xu&#x1ea5;t"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton8ActionPerformed"/>
+              </Events>
             </Component>
           </SubComponents>
         </Container>

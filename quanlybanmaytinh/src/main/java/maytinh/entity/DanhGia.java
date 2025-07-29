@@ -10,6 +10,9 @@ public class DanhGia {
     private String noiDung;
     private Date ngayDanhGia;
 
+    // ✅ Thêm thuộc tính trả lời
+    private String traLoi;
+
     public DanhGia() {}
 
     public DanhGia(int maDG, String username, int maSP, int diem, String noiDung, Date ngayDanhGia) {
@@ -19,6 +22,12 @@ public class DanhGia {
         this.diem = diem;
         this.noiDung = noiDung;
         this.ngayDanhGia = ngayDanhGia;
+    }
+
+    // ✅ Constructor mới có thêm trả lời (nếu cần)
+    public DanhGia(int maDG, String username, int maSP, int diem, String noiDung, Date ngayDanhGia, String traLoi) {
+        this(maDG, username, maSP, diem, noiDung, ngayDanhGia);
+        this.traLoi = traLoi;
     }
 
     // Getter và Setter
@@ -68,5 +77,14 @@ public class DanhGia {
 
     public void setNgayDanhGia(Date ngayDanhGia) {
         this.ngayDanhGia = ngayDanhGia;
+    }
+
+    // ✅ Getter & Setter cho Trả lời
+    public String getTraLoi() {
+        return traLoi;
+    }
+
+    public void setTraLoi(String traLoi) {
+        this.traLoi = traLoi;
     }
 }

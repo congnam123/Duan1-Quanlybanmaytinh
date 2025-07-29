@@ -7,7 +7,7 @@ GO
 USE QLBanmaytinh;
 GO
 
--- BẢNG NGƯỜI DÙNG
+-- BẢNG NGƯỜI DÙNG (THÊM CỘT Email)
 CREATE TABLE Users (
     Username NVARCHAR(20) NOT NULL PRIMARY KEY,
     Password NVARCHAR(50) NOT NULL,
@@ -17,6 +17,7 @@ CREATE TABLE Users (
     NgaySinh DATE,
     DiaChi NVARCHAR(100),
     SoDienThoai NVARCHAR(15),
+    Email NVARCHAR(100),
     PhanLoai NVARCHAR(50),
     Photo NVARCHAR(50) NOT NULL
 );
@@ -30,10 +31,10 @@ CREATE TABLE LoaiSanPham (
 -- BẢNG SẢN PHẨM
 CREATE TABLE SanPham (
     MaSP INT PRIMARY KEY IDENTITY,
-    TenSP NVARCHAR(100),
+    TenSP NVARCHAR(100) NOT NULL,
     MoTa NVARCHAR(255),
-    Gia DECIMAL(18, 2),
-    SoLuongTon INT,
+    Gia DECIMAL(18, 2) NOT NULL,
+    SoLuongTon INT NOT NULL,
     NgayThem DATETIME DEFAULT GETDATE(),
     MaLoai INT,
     FOREIGN KEY (MaLoai) REFERENCES LoaiSanPham(MaLoai)
@@ -43,7 +44,7 @@ CREATE TABLE SanPham (
 CREATE TABLE DonHang (
     MaDH INT PRIMARY KEY IDENTITY,
     Username NVARCHAR(20),
-    NgayLap DATETIME,
+    NgayLap DATETIME DEFAULT GETDATE(),
     TongTien DECIMAL(18,2),
     PhuongThucThanhToan NVARCHAR(50),
     TrangThai NVARCHAR(50),
@@ -61,7 +62,7 @@ CREATE TABLE ChiTietDonHang (
     FOREIGN KEY (MaSP) REFERENCES SanPham(MaSP)
 );
 
--- BẢNG ĐÁNH GIÁ
+-- ✅ BẢNG ĐÁNH GIÁ (THÊM CỘT TraLoi)
 CREATE TABLE DanhGia (
     MaDG INT PRIMARY KEY IDENTITY,
     Username NVARCHAR(20),
@@ -69,18 +70,19 @@ CREATE TABLE DanhGia (
     NoiDung NVARCHAR(255),
     Diem INT CHECK (Diem BETWEEN 1 AND 5),
     NgayDanhGia DATETIME DEFAULT GETDATE(),
+    TraLoi NVARCHAR(255), -- Cột để admin trả lời đánh giá
     FOREIGN KEY (Username) REFERENCES Users(Username),
     FOREIGN KEY (MaSP) REFERENCES SanPham(MaSP)
 );
 
 -- DỮ LIỆU NGƯỜI DÙNG
-INSERT INTO Users (Username, Password, Enabled, Manager, Fullname, NgaySinh, DiaChi, SoDienThoai ,PhanLoai, Photo)
+INSERT INTO Users (Username, Password, Enabled, Manager, Fullname, NgaySinh, DiaChi, SoDienThoai, Email, PhanLoai, Photo)
 VALUES 
-('admin', 'admin123', 1, 1, N'Nguyễn Văn A', '1995-05-20', N'123 Lê Lợi, TP.HCM', '0912345678',N'Thường', 'admin.jpg'),
-('user1', '123456', 1, 0, N'Trần Thị B', '1998-08-15', N'45 Nguyễn Trãi, Hà Nội', '0909123456',N'Vip', 'user1.jpg'),
-('user2', '654321', 1, 0, N'Lê Văn C', '2000-12-01', N'99 Pasteur, Đà Nẵng', '0987654321',N'Thường', 'user2.jpg'),
-('khach1', 'abc123', 1, 0, N'Nguyễn Khách 1', '1990-01-01', N'Hà Nội', '0900000001',N'Vip', 'khach1.jpg'),
-('khach2', 'xyz789', 1, 0, N'Lê Khách 2', '1992-02-02', N'Sài Gòn', '0900000002',N'Vip', 'khach2.jpg');
+('admin', 'admin123', 1, 1, N'Nguyễn Văn A', '1995-05-20', N'123 Lê Lợi, TP.HCM', '0912345678', 'admin@gmail.com', N'Thường', 'admin.jpg'),
+('user1', '123456', 1, 0, N'Trần Thị B', '1998-08-15', N'45 Nguyễn Trãi, Hà Nội', '0909123456', 'user1@gmail.com', N'Vip', 'user1.jpg'),
+('user2', '654321', 1, 0, N'Lê Văn C', '2000-12-01', N'99 Pasteur, Đà Nẵng', '0987654321', 'user2@gmail.com', N'Thường', 'user2.jpg'),
+('khach1', 'abc123', 1, 0, N'Nguyễn Khách 1', '1990-01-01', N'Hà Nội', '0900000001', 'khach1@gmail.com', N'Vip', 'khach1.jpg'),
+('khach2', 'xyz789', 1, 0, N'Lê Khách 2', '1992-02-02', N'Sài Gòn', '0900000002', 'khach2@gmail.com', N'Vip', 'khach2.jpg');
 
 -- DỮ LIỆU LOẠI SẢN PHẨM
 INSERT INTO LoaiSanPham (TenLoai)
@@ -113,16 +115,16 @@ VALUES
 (1, 1, 1, 13500000),
 (1, 5, 1, 500000),
 (2, 2, 1, 18500000),
-(1, 5, 1, 500000),
-(2, 2, 1, 18500000);
+(3, 3, 1, 14000000),
+(4, 4, 1, 18500000);
 
--- DỮ LIỆU ĐÁNH GIÁ
+-- DỮ LIỆU ĐÁNH GIÁ (chưa có trả lời)
 INSERT INTO DanhGia (Username, MaSP, NoiDung, Diem)
 VALUES 
 ('khach1', 1, N'Sản phẩm tốt, chạy mượt', 5),
 ('khach2', 2, N'Đóng gói cẩn thận, hiệu năng ổn', 4),
-('user1', 1, N'Sản phẩm tốt, chạy mượt', 3),
-('user2', 2, N'Đóng gói cẩn thận, hiệu năng ổn', 2);
+('user1', 1, N'Ổn nhưng hơi nóng máy', 3),
+('user2', 2, N'Sản phẩm chưa đúng mô tả', 2);
 
 -- KIỂM TRA DỮ LIỆU
 SELECT * FROM Users;
@@ -132,6 +134,6 @@ SELECT * FROM DonHang;
 SELECT * FROM ChiTietDonHang;
 SELECT * FROM DanhGia;
 
--- DOANH THU NGÀY TEST
+-- DOANH THU THEO NGÀY
 SELECT * FROM DonHang
 WHERE NgayLap BETWEEN '2025-07-19' AND '2025-07-20';

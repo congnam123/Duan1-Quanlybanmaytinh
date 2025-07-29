@@ -19,7 +19,7 @@ public class XJdbc {
         String driver = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
         String dburl = "jdbc:sqlserver://localhost:1433;database=QLBanmaytinh;encrypt=true;trustServerCertificate=true;";
         String username = "sa";
-        String password = "12345";
+        String password = "123";
 
         try {
             if (!isReady()) {
@@ -147,7 +147,7 @@ public class XJdbc {
     public static Connection getConnection() throws SQLException {
         String dburl = "jdbc:sqlserver://localhost:1433;database=QLBanmaytinh;encrypt=true;trustServerCertificate=true;";
         String username = "sa";
-        String password = "12345";
+        String password = "123";
 
         try {
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
