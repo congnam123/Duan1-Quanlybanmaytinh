@@ -254,51 +254,55 @@ public class quanlykhachhang extends javax.swing.JDialog implements KhachHangCon
         }
     }
 
-    private void deleteNguoiDung() {
-        int selectedRow = tblKhachHang.getSelectedRow();
-        if (selectedRow >= 0) {
+private void deleteNguoiDung() {
+    int selectedRow = tblKhachHang.getSelectedRow();
+    if (selectedRow >= 0) {
+        String username = (String) tblKhachHang.getValueAt(selectedRow, 0);
+
+        int confirm = JOptionPane.showConfirmDialog(this,
+                "Bạn có chắc chắn muốn xóa người dùng: " + username + "?",
+                "Xác nhận xóa", JOptionPane.YES_NO_OPTION);
+
+        if (confirm == JOptionPane.YES_OPTION) {
+            dao.delete(username); // gọi đúng phương thức delete
+            fillToTable(); // cập nhật lại bảng
+            JOptionPane.showMessageDialog(this, "Xóa người dùng thành công!");
+        }
+    } else {
+        JOptionPane.showMessageDialog(this, "Vui lòng chọn người dùng để xóa!");
+    }
+}
+
+
+private void updateNguoiDung() {
+    int selectedRow = tblKhachHang.getSelectedRow();
+    if (selectedRow >= 0) {
+        try {
             String username = (String) tblKhachHang.getValueAt(selectedRow, 0);
-            NguoiDung nd = (NguoiDung) dao.findByUsername(username); // lấy dữ liệu đầy đủ từ DB
+            NguoiDung nd = dao.findOneByUsername(username); // ✅ dùng hàm mới
+
+            if (nd == null) {
+                JOptionPane.showMessageDialog(this, "Không tìm thấy người dùng!");
+                return;
+            }
 
             CapNhatKhachHang dialog = new CapNhatKhachHang(null, nd);
+            dialog.setLocationRelativeTo(this);
             dialog.setVisible(true);
 
             if (dialog.isUpdated()) {
                 dao.update(dialog.getUpdatedNguoiDung());
                 fillToTable();
-
+                JOptionPane.showMessageDialog(this, "Cập nhật thành công!");
             }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Lỗi khi cập nhật!");
         }
+    } else {
+        JOptionPane.showMessageDialog(this, "Vui lòng chọn người dùng để cập nhật!");
     }
-
-    private void updateNguoiDung() {
-        int selectedRow = tblKhachHang.getSelectedRow();
-        if (selectedRow >= 0) {
-            try {
-                String username = (String) tblKhachHang.getValueAt(selectedRow, 0);
-
-                // Lấy thông tin người dùng từ database
-                NguoiDung nd = dao.findByUsername(username).get(0);
-
-                // Gọi dialog cập nhật
-                CapNhatKhachHang dialog = new CapNhatKhachHang(null, nd);
-                dialog.setLocationRelativeTo(this);
-                dialog.setVisible(true);
-
-                // Nếu người dùng nhấn Lưu và dữ liệu được cập nhật
-                if (dialog.isUpdated()) {
-                    dao.update(dialog.getUpdatedNguoiDung()); // Cập nhật vào DB
-                    fillToTable(); // Load lại bảng
-                    JOptionPane.showMessageDialog(this, "Cập nhật thành công!");
-                }
-
-            } catch (Exception e) {
-                e.printStackTrace();
-                JOptionPane.showMessageDialog(this, "Lỗi khi cập nhật!");
-            }
-        } else {
-            JOptionPane.showMessageDialog(this, "Vui lòng chọn người dùng để cập nhật!");
-        }
-    }
+}
 
 }

@@ -13,13 +13,14 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 @Data
-public class User
-{
- private String username;
- private String password;
- private boolean enabled;
- private String fullname;
- @Builder.Default
- private String photo = "photo.png";
- private boolean manager;   
+public class User {
+    private String username;
+    private String password;
+    private boolean enabled;
+    private String fullname;
+    private String email; 
+    @Builder.Default
+    private String photo = "photo.png";
+    private boolean manager;   
 }
+

@@ -5,14 +5,14 @@
 package maytinh.ui;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import maytinh.controller.GiaodienchinhController;
 import maytinh.util.XAuth;
-
 /**
  *
  * @author PC
  */
-public class manhinhchinhkhachhang extends javax.swing.JDialog implements GiaodienchinhController{
+public class manhinhchinhkhachhang extends javax.swing.JDialog implements GiaodienchinhController {
 
     /**
      * Creates new form manhinhchinh
@@ -20,9 +20,8 @@ public class manhinhchinhkhachhang extends javax.swing.JDialog implements Giaodi
     public manhinhchinhkhachhang(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-       this.setLocationRelativeTo(null);
+        this.setLocationRelativeTo(null);
     }
-
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -257,6 +256,11 @@ public class manhinhchinhkhachhang extends javax.swing.JDialog implements Giaodi
         jButton8.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jButton8.setForeground(new java.awt.Color(0, 102, 102));
         jButton8.setText("Đăng xuất");
+        jButton8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton8ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel10Layout = new javax.swing.GroupLayout(jPanel10);
         jPanel10.setLayout(jPanel10Layout);
@@ -306,10 +310,10 @@ public class manhinhchinhkhachhang extends javax.swing.JDialog implements Giaodi
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, 0, Short.MAX_VALUE)
-                            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, 0, Short.MAX_VALUE)
-                            .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, 0, Short.MAX_VALUE)
-                            .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, 0, Short.MAX_VALUE)
+                            .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 209, Short.MAX_VALUE)
+                            .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 209, Short.MAX_VALUE)
+                            .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, 209, Short.MAX_VALUE)
+                            .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, 209, Short.MAX_VALUE)
                             .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jPanel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -393,10 +397,23 @@ public class manhinhchinhkhachhang extends javax.swing.JDialog implements Giaodi
         this.showDoimatkhauJDialog(null);
     }//GEN-LAST:event_jButton7ActionPerformed
 
+    private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
+        // TODO add your handling code here:
+        int chon = JOptionPane.showConfirmDialog(this, "Bạn có chắc chắn muốn đăng xuất không?", "Đăng xuất", JOptionPane.YES_NO_OPTION);
+        if (chon == JOptionPane.YES_OPTION) {
+            this.dispose();
+
+            // Mở lại giao diện đăng nhập
+            dangNhap login = new dangNhap(null, true);
+            login.setLocationRelativeTo(null);
+            login.setVisible(true);
+        }
+    }//GEN-LAST:event_jButton8ActionPerformed
+
     /**
      * @param args the command line arguments
      */
-   public static void main(String args[]) {
+    public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -488,7 +505,5 @@ public class manhinhchinhkhachhang extends javax.swing.JDialog implements Giaodi
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
     // End of variables declaration//GEN-END:variables
-
-
 
 }

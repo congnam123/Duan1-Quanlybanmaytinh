@@ -4,8 +4,10 @@
  */
 package maytinh.ui;
 
+import java.awt.Color;
+import java.awt.Font;
 import java.util.List;
-import javax.swing.JComboBox;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
@@ -18,13 +20,17 @@ import maytinh.impl.DanhGiaDAOImpl;
  * @author Cong Nam
  */
 public class quanlydanhgia extends javax.swing.JDialog implements QuanlydanhgiaController {
-
+    
     DanhGiaDAOImpl dao = new DanhGiaDAOImpl();
-
+    
     public quanlydanhgia(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
         fillToTable(tblDanhGia);
+        tblDanhGia.getTableHeader().setFont(new Font("Segoe UI",Font.BOLD,12));
+        tblDanhGia.getTableHeader().setOpaque(false);
+        tblDanhGia.setRowHeight(25);
+        
     }
 
     /**
@@ -42,20 +48,35 @@ public class quanlydanhgia extends javax.swing.JDialog implements QuanlydanhgiaC
         btnTimKiem = new javax.swing.JButton();
         cboSoSao = new javax.swing.JComboBox<>();
         btnLoc = new javax.swing.JButton();
+        txtTraLoi = new javax.swing.JTextField();
+        btnTraLoi = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         tblDanhGia.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
             },
             new String [] {
-                "Mã đánh giá", "Người dùng", "Sản phẩm", "Số sao", "Nội dung", "Ngày đánh giá"
+                "Mã đánh giá", "Người dùng", "Sản phẩm", "Số sao", "Nội dung", "Ngày đánh giá", "Trả lời"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tblDanhGia.setFocusable(false);
+        tblDanhGia.setRowHeight(25);
+        tblDanhGia.setSelectionBackground(new java.awt.Color(213, 81, 81));
+        tblDanhGia.setShowHorizontalLines(true);
+        tblDanhGia.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(tblDanhGia);
 
         btnTimKiem.setText("Tìm kiếm");
@@ -74,34 +95,52 @@ public class quanlydanhgia extends javax.swing.JDialog implements QuanlydanhgiaC
             }
         });
 
+        btnTraLoi.setText("Trả lời");
+        btnTraLoi.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTraLoiActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 690, Short.MAX_VALUE)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnTimKiem)
-                .addGap(29, 29, 29)
-                .addComponent(cboSoSao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(7, 7, 7)
-                .addComponent(btnLoc)
-                .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap(453, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnTimKiem)
+                        .addGap(29, 29, 29)
+                        .addComponent(cboSoSao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(7, 7, 7)
+                        .addComponent(btnLoc)
+                        .addGap(24, 24, 24))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(txtTraLoi, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(32, 32, 32)
+                        .addComponent(btnTraLoi)
+                        .addContainerGap())))
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(63, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnTimKiem)
                     .addComponent(cboSoSao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnLoc))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 246, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtTraLoi, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnTraLoi))
+                .addContainerGap(19, Short.MAX_VALUE))
         );
 
         pack();
@@ -116,6 +155,11 @@ public class quanlydanhgia extends javax.swing.JDialog implements QuanlydanhgiaC
         // TODO add your handling code here:
         locDanhGiaTheoSao(tblDanhGia, cboSoSao);
     }//GEN-LAST:event_btnLocActionPerformed
+
+    private void btnTraLoiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTraLoiActionPerformed
+        // TODO add your handling code here:
+        this.traLoiDanhGia(tblDanhGia, txtTraLoi);
+    }//GEN-LAST:event_btnTraLoiActionPerformed
 
     /**
      * @param args the command line arguments
@@ -162,10 +206,12 @@ public class quanlydanhgia extends javax.swing.JDialog implements QuanlydanhgiaC
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnLoc;
     private javax.swing.JButton btnTimKiem;
+    private javax.swing.JButton btnTraLoi;
     private javax.swing.JComboBox<String> cboSoSao;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tblDanhGia;
     private javax.swing.JTextField txtSearch;
+    private javax.swing.JTextField txtTraLoi;
     // End of variables declaration//GEN-END:variables
 
     @Override
@@ -179,11 +225,13 @@ public class quanlydanhgia extends javax.swing.JDialog implements QuanlydanhgiaC
                 dg.getMaSP(),
                 dg.getDiem(),
                 dg.getNoiDung(),
-                dg.getNgayDanhGia()
+                dg.getNgayDanhGia(),
+                dg.getTraLoi() // Cột trả lời
             });
+            
         }
     }
-
+    
     @Override
     public void timKiemDanhGia(JTable table, JTextField txtSearch) {
         String keyword = txtSearch.getText().trim();
@@ -197,17 +245,19 @@ public class quanlydanhgia extends javax.swing.JDialog implements QuanlydanhgiaC
                 dg.getMaSP(),
                 dg.getDiem(),
                 dg.getNoiDung(),
-                dg.getNgayDanhGia()
+                dg.getNgayDanhGia(),
+                dg.getTraLoi() // Cột trả lời
             });
+            
         }
     }
-
+    
     @Override
     public void locDanhGiaTheoSao(JTable table, javax.swing.JComboBox comboBox) {
         String selected = comboBox.getSelectedItem().toString(); // "Tất cả", "5 sao", ...
         DefaultTableModel model = (DefaultTableModel) table.getModel();
         model.setRowCount(0);
-
+        
         for (DanhGia dg : dao.getAll()) {
             String soSao = dg.getDiem() + " sao";
             if (selected.equals("Tất cả") || soSao.equals(selected)) {
@@ -217,10 +267,39 @@ public class quanlydanhgia extends javax.swing.JDialog implements QuanlydanhgiaC
                     dg.getMaSP(),
                     dg.getDiem(),
                     dg.getNoiDung(),
-                    dg.getNgayDanhGia()
+                    dg.getNgayDanhGia(),
+                    dg.getTraLoi() // Cột trả lời
                 });
+                
             }
         }
     }
+    
+    @Override
+    public void traLoiDanhGia(JTable table, JTextField txtTraLoi) {
+        int selectedRow = table.getSelectedRow();
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(null, "Vui lòng chọn một đánh giá để trả lời!");
+            return;
+        }
+        
+        String traLoi = txtTraLoi.getText().trim();
+        if (traLoi.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Vui lòng nhập nội dung trả lời!");
+            return;
+        }
+        
+        int maDanhGia = (int) table.getValueAt(selectedRow, 0); // Lấy mã đánh giá (giả sử cột 0 là mã)
 
+        // Gọi DAO để cập nhật trả lời
+        boolean success = dao.traLoiDanhGia(maDanhGia, traLoi);
+        if (success) {
+            JOptionPane.showMessageDialog(null, "Trả lời đánh giá thành công!");
+            txtTraLoi.setText(""); // Xóa nội dung
+            fillToTable(table);   // Cập nhật lại bảng
+        } else {
+            JOptionPane.showMessageDialog(null, "Trả lời đánh giá thất bại!");
+        }
+    }
+    
 }
