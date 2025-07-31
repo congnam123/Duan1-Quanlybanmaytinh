@@ -4,11 +4,16 @@
  */
 package maytinh.ui;
 
+import maytinh.entity.SanPham;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author PC
  */
 public class Thongtinsanpham extends javax.swing.JDialog {
+
+    private SanPham selectedProduct;
 
     /**
      * Creates new form ttsp
@@ -142,6 +147,40 @@ public class Thongtinsanpham extends javax.swing.JDialog {
                 dialog.setVisible(true);
             }
         });
+    }
+
+    /**
+     * Method để set sản phẩm được chọn và hiển thị thông tin
+     */
+    public void setSelectedProduct(SanPham sanPham) {
+        this.selectedProduct = sanPham;
+        if (sanPham != null) {
+            displayProductInfo();
+        }
+    }
+
+    /**
+     * Hiển thị thông tin sản phẩm trong bảng
+     */
+    private void displayProductInfo() {
+        if (selectedProduct == null) return;
+
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        model.setRowCount(0); // Xóa dữ liệu cũ
+
+        // Thêm thông tin sản phẩm vào bảng
+        model.addRow(new Object[]{
+            selectedProduct.getTenSP(),
+            selectedProduct.getSoLuong(),
+            selectedProduct.getMoTa() != null ? selectedProduct.getMoTa() : "Không có mô tả",
+            String.format("%,.0f VNĐ", selectedProduct.getGia())
+        });
+
+        // Cập nhật title
+        this.setTitle("Thông tin sản phẩm: " + selectedProduct.getTenSP());
+
+        // Cập nhật label
+        jLabel1.setText("Chi tiết sản phẩm: " + selectedProduct.getTenSP());
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

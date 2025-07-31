@@ -10,8 +10,8 @@ import maytinh.util.XQuery;
 
 public class UserDAOImpl implements UserDAO {
 
-    String createSql = "INSERT INTO Users(Username, Password, Enabled, Fullname, Photo, Manager, Email) VALUES (?, ?, ?, ?, ?, ?, ?)";
-    String updateSql = "UPDATE Users SET Password=?, Enabled=?, Fullname=?, Photo=?, Manager=?, Email=? WHERE Username=?";
+    String createSql = "INSERT INTO Users(Username, Password, Enabled, Fullname, Photo, Manager, Email, NgaySinh, DiaChi, SoDienThoai, PhanLoai ,PhanLoaiTaiKhoan ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)";
+    String updateSql = "UPDATE Users SET Password=?, Enabled=?, Fullname=?, Photo=?, Manager=?, Email=?, NgaySinh=?, DiaChi=?, SoDienThoai=?, PhanLoai=?,PhanLoaiTaiKhoan=? WHERE Username=?";
     String deleteSql = "DELETE FROM Users WHERE Username=?";
     String findAllSql = "SELECT * FROM Users";
     String findByUsernameSql = "SELECT * FROM Users WHERE Username=?";
@@ -25,7 +25,12 @@ public class UserDAOImpl implements UserDAO {
             entity.getFullname(),
             entity.getPhoto(),
             entity.isManager(),
-            entity.getEmail()
+            entity.getEmail(),
+            entity.getNgaySinh(),
+            entity.getDiaChi(),
+            entity.getSoDienThoai(),
+            entity.getPhanLoai(),
+            entity.getPhanLoaiTaiKhoan()
         };
         XJdbc.executeUpdate(createSql, values);
         return entity;
@@ -40,7 +45,12 @@ public class UserDAOImpl implements UserDAO {
             entity.getPhoto(),
             entity.isManager(),
             entity.getEmail(),
-            entity.getUsername()
+            entity.getNgaySinh(),
+            entity.getDiaChi(),
+            entity.getSoDienThoai(),
+            entity.getPhanLoai(),
+            entity.getUsername(),
+            entity.getPhanLoaiTaiKhoan()
         };
         XJdbc.executeUpdate(updateSql, values);
     }
@@ -66,7 +76,7 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public void insert(User user) {
-        String sql = "INSERT INTO Users (Username, Password, Enabled, Fullname, Photo, Manager, Email) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO Users (Username, Password, Enabled, Fullname, Photo, Manager, Email, NgaySinh, DiaChi, SoDienThoai, PhanLoai) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         XJdbc.update(sql,
                 user.getUsername(),
                 user.getPassword(),
@@ -74,7 +84,11 @@ public class UserDAOImpl implements UserDAO {
                 user.getFullname(),
                 user.getPhoto(),
                 user.isManager(),
-                user.getEmail()
+                user.getEmail(),
+                user.getNgaySinh(),
+                user.getDiaChi(),
+                user.getSoDienThoai(),
+                user.getPhanLoai()
         );
     }
 
@@ -107,6 +121,10 @@ public class UserDAOImpl implements UserDAO {
         user.setEnabled(rs.getBoolean("Enabled"));
         user.setPhoto(rs.getString("Photo"));
         user.setEmail(rs.getString("Email"));
+        user.setNgaySinh(rs.getDate("NgaySinh"));
+        user.setDiaChi(rs.getString("DiaChi"));
+        user.setSoDienThoai(rs.getString("SoDienThoai"));
+        user.setPhanLoai(rs.getString("PhanLoaiTaiKhoan"));
         return user;
     }
 

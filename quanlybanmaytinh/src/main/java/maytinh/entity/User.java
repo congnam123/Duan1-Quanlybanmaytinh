@@ -4,6 +4,7 @@
  */
 package maytinh.entity;
 
+import java.sql.Date;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -21,6 +22,11 @@ public class User {
     private String email; 
     @Builder.Default
     private String photo = "photo.png";
-    private boolean manager;   
+    private boolean manager;
+    private Date ngaySinh;
+    private String diaChi;
+    private String soDienThoai;
+    private String phanLoai;
+    private String PhanLoaiTaiKhoan;
 }
 

@@ -2,8 +2,10 @@ package maytinh.controller;
 
 import javax.swing.JDialog;
 import javax.swing.JFrame;
+import maytinh.ui.AdminLienHeJDialog;
 import maytinh.ui.Doimatkhau;
-import maytinh.ui.Lichsu;
+import maytinh.ui.LichSuMuaHang;
+import maytinh.ui.LienHeJDialog;
 import maytinh.ui.Manchay;
 import maytinh.ui.Quanlysanpham;
 import maytinh.ui.Thongtincanhan;
@@ -89,7 +91,14 @@ public interface GiaodienchinhController {
     }
 
     default void showLichsuJDialog(java.awt.Frame parent) {
-        this.showJDialog(new Lichsu(parent, true));
+        this.showJDialog(new LichSuMuaHang(parent, true));
+    }
+        default void showLienHeJDialog(java.awt.Frame parent) {
+        this.showJDialog(new LienHeJDialog(parent, true));
+    }
+
+    default void showAdminLienHeJDialog(java.awt.Frame parent) {
+        this.showJDialog(new AdminLienHeJDialog(parent, true));
     }
 
 }
